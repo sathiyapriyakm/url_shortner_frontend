@@ -48,7 +48,7 @@ export function Application() {
         <div>
           <Navbar />
         </div>
-        <div className="dashboard-chart" style={{ marginTop: "50px" }}>
+        <div className="dashboard-chart" style={{ marginTop: "70px"}}>
           <h3 style={{ textAlign: "center" }}>Monthly Report</h3>
 
           <Monthlydata dayCount={dayCount} />
