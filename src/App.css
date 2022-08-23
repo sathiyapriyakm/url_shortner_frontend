@@ -26,12 +26,12 @@ body{
   padding:100px 100px;
 }
   .add-user-name{
-  width:30%;
+  width:400px;
   height:50px;
   /* margin-top: 10px; */
 }
 .add-user-btn{
-  width:30%;
+  width:400px;
   height:50px;
   font-size: 20px;;
   background-color:skyblue;
@@ -135,9 +135,12 @@ img.displayed {
       gap:20px;
       
   }
-  /* .paper-style{
-    width:95% !important;
-
-} */
+  .add-user-name{
+    width:300px;
+    /* margin-top: 10px; */
+  }
+  .add-user-btn{
+    width:300px;
+  }
 
 }
