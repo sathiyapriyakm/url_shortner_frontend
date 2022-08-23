@@ -1,93 +1,112 @@
-import React from 'react'
-import {Paper,  Button } from '@material-ui/core'
-import TextField from '@mui/material/TextField';
-import {Navbar} from "./Navbar";
-// import { Footer } from './Footer';
-import { useState } from "react";
-import { API } from './global.js';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { Paper, Button } from "@material-ui/core";
+import TextField from "@mui/material/TextField";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { Navbar } from "./Navbar";
+import { API } from "./global.js";
+import { useNavigate } from "react-router-dom";
 
+export const CreateUrl = () => {
+  const navigate = useNavigate();
 
-export const CreateUrl=()=>{
+  const paperStyle = {
+    padding: 50,
+    height: "40vh",
+    width: "50vw",
+    margin: "100px auto",
+  };
 
-    const navigate=useNavigate();
-    
+  const btnstyle = {
+    margin: "auto",
+    backgroundColor: "#51459E",
+    border: "1px solid var(--yellow-theme-background-color:#1d1d1d)",
+    color:"white",
+    fontSize: "14px",
+  };
 
-    const paperStyle={padding :50,height:'40vh',width:"50vw", margin:"100px auto"}
-    
-    const btnstyle={margin:'auto',backgroundColor: "var(--yellow-theme-main-color)",border:"1px solid var(--yellow-theme-background-color:#1d1d1d)",fontSize:"14px"}
+  // const [long, setLong] = useState("");
 
-   
-    const [long, setLong] = useState("");
-    
-    
-   
-    
-    const createprocess = () => {  
-        const createdurl={long:long}; 
-        
-        console.log(createdurl);
-        fetch(`${API}/createshorturl`,
-    {
-        method:"POST",
-        body: JSON.stringify(createdurl),
-        headers:{"Content-Type":"application/json"},
-    }).then((data)=>{
-        data.json();
-        console.log(data)})
-    .then((data1)=>{
-        console.log(data1);
-        if(data1.message==="URL generated"){
-            // login();
-            // setLong("");
-            // navigate("/showtable"); 
-            navigate("/showtable") 
-            console.log(`window alert${data1.message} `);
-          }
-        else {
-            console.log(`window alert${data1.message} `);
-            window.alert(`${data1.message}`);
+  const createprocess = (long) => {
+    console.log(long);
+    fetch(`${API}/createshorturl`, {
+      method: "POST",
+      body: JSON.stringify(long),
+      headers: { "Content-Type": "application/json" },
+    })
+      .then((res) => {
+        console.log(res);
+        if (res.status === 200) {
+          navigate("/showtable");
+        } else {
+          window.alert("url already exist kindly refer show Table");
+          navigate("/showtable");
         }
-    }).catch((e)=> console.log("ERROR"))  
-}
+      })
+      .catch((e) => console.log("ERROR"));
+  };
+  const initialValues = {
+    long: "",
+  };
+  const urlValidationSchema = Yup.object({
+    long: Yup.string().required("Required").min(8, "URL is already shorter"),
+  });
 
-    return(
-            
-        <div>
-            <div>
-                <Navbar/>
-            </div>
-            
-            <div  style={{display:"flex",justifyContent:"center",alignItems:"center",border:"1px solid #000000"}}>
-            <Paper elevation={10} style={paperStyle} className="paper-style">
-                <form>
-            <h3 className="h3-tag" style={{fontSize:"24px"}}>Create Shorten URL</h3>
-               
-                <TextField 
-                label='Long URL' 
-                id="outlined-basic" 
-                style={{fontSize:"20px",margin:"20px 0px"}}
-                name="url"
-                fullWidth
-                required
-                value={long}
-                onChange={event => setLong(event.target.value)}
-                />
-                
-                
-                <Button type='submit' 
-                variant="contained" 
-                fullWidth
-                style={btnstyle} 
-                onClick={() => {
-                    createprocess()
-                }}
-                >Generate</Button>
-                </form>
-                
-            </Paper>
-            </div>
-            </div>    
-       
-    )
-}
+  const { handleBlur, handleChange, handleSubmit, values, errors, touched } =
+    useFormik({
+      initialValues: initialValues,
+      validationSchema: urlValidationSchema,
+      onSubmit: (longurl) => {
+        console.log("onSubmit", longurl);
+        createprocess(longurl);
+      },
+    });
+
+  return (
+    <div>
+      <Paper elevation={4} style={{minHeight:"100vh",borderRadius:"0px"}} >
+      <div>
+        <Navbar />
+      </div>
+      <form onSubmit={handleSubmit}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Paper elevation={10} style={paperStyle} className="paper-style">
+            <h3 className="h3-tag" style={{ fontSize: "24px" }}>
+              Create Shorten URL
+            </h3>
+            <TextField
+              className="add-user-name"
+              label="Long URL"
+              type="text"
+              value={values.long}
+              fullWidth
+              name="long"
+              style={{ fontSize: "20px", margin: "20px 0px" }}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              error={touched.long && errors.long ? true : false}
+              helperText={touched.long && errors.long ? errors.long : ""}
+            />
+            <Button
+              className="add-user-btn"
+              color="primary"
+              fullWidth
+              type="submit"
+              style={btnstyle}
+              variant="contained"
+            >
+              Generate
+            </Button>
+          </Paper>
+        </div>
+      </form>
+      </Paper>
+    </div>
+  );
+};

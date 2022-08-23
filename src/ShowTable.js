@@ -1,6 +1,7 @@
 import { useEffect,useState } from "react"
 import {Navbar} from "./Navbar";
 import { API } from "./global";
+import { Paper} from "@material-ui/core";
 // import { Footer } from './Footer';
 
 export function ShowTable(){
@@ -20,6 +21,7 @@ export function ShowTable(){
      
     return(
          <div>
+              <Paper elevation={4} style={{minHeight:"100vh",borderRadius:"0px"}} >
             <div>
                 <Navbar/>
             </div>
@@ -53,26 +55,13 @@ export function ShowTable(){
             </table>
             </div> 
             <div>
-            {/* <Footer/> */}
             </div>
+            </Paper>
         </div>
     )
 }
 
 export function Table({index,long,short,visit}){
-
-    const [longUrl,setLongUrl]=useState("");
-    // useEffect(()=>redirect(),[])
-    const redirect=(short)=>{
-        fetch(`https://login-proces.herokuapp.com/urlshorten/${short}`,
-        {method:"GET",})
-        .then((data)=>data.json())
-        .then((mvs)=>{setLongUrl(mvs)
-        
-        })
-        .catch(e=> console.log(e))
-
-    }
 
     return(
         <>
@@ -80,7 +69,7 @@ export function Table({index,long,short,visit}){
                 <tr>
                 <td>  {index+1}   </td>
                 <td>  {long}    </td>
-                <td> <a href={"https://login-proces.herokuapp.com/urlshorten/"+short} target="_blank" onClick={()=>redirect(short)}>{short}</a> </td>
+                <td> <a href={`${API}/geturl/${short}`} target="_blank" rel="noreferrer">{short}</a> </td>
                 <td>    {visit}   </td>
                 </tr>
             

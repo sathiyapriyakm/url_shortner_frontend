@@ -4,7 +4,7 @@ import { FaBars } from "react-icons/fa"
 import { HiX } from "react-icons/hi"
 import { Link } from "react-router-dom"
 import { useState } from "react"
-import "./navBar.scss"
+import "./navBar.css"
 
 const data = [
     {
