@@ -57,11 +57,13 @@ body{
 }
 img.displayed {
   display: block;
-  height:600px;
-  width: 800px;
+  height:400px;
+  padding: 0;
+  margin: 0;
+  width: 600px;
   object-fit: cover;
-  margin-left: auto;
-  margin-right: auto 
+  margin-left: auto !important;
+  margin-right: auto !important ;
 }
 .application{
   display: flex;
@@ -142,5 +144,16 @@ img.displayed {
   .add-user-btn{
     width:300px;
   }
+  img.displayed {
+    height:100px;
+    width: 200px;
+  }
 
+}
+.pageNotFound{
+  text-align: center;
+}
+.imageForNotFound{
+  height: 50% !important;;
+  width: 50% !important;;
 }
